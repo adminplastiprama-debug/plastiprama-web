@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo · Plastiprama</title>
+<meta name="description" content="Catálogo de empaques y plásticos al mayor.">
+
+<link rel="icon" type="image/png" href="favicon-512.png.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --verde:     #468E28;
+    --verde-osc: #35701D;
+    --tinta:     #101410;
+    --tinta-sua: #5A635A;
+    --fondo:     #F4F6F3;
+    --tarjeta:   #FFFFFF;
+    --linea:     rgba(16,20,16,.12);
+    --pad: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    background:var(--fondo);
+    color:var(--tinta);
+    font-family:'Archivo', system-ui, sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono', ui-monospace, monospace;
+    font-size:.7rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+
+  header{
+    background:var(--tarjeta);
+    border-bottom:1px solid var(--linea);
+    padding:1rem var(--pad);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    flex-wrap:wrap;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  header img{ height:44px; width:auto; }
+  .tasa{ color:var(--tinta-sua); }
+
+  main{
+    max-width:1200px;
+    margin:0 auto;
+    padding:var(--pad);
+  }
+
+  h1{
+    font-size:clamp(1.6rem, 4vw, 2.4rem);
+    font-weight:800;
+    letter-spacing:-.03em;
+    margin-bottom:.4rem;
+  }
+  .sub{ color:var(--tinta-sua); margin-bottom:2rem; }
+
+  .filtros{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+    margin-bottom:2rem;
+  }
+  .filtro{
+    padding:.5rem 1rem;
+    border:1px solid var(--linea);
+    border-radius:999px;
+    background:var(--tarjeta);
+    cursor:pointer;
+    font-size:.9rem;
+    font-family:inherit;
+    transition:.15s;
+  }
+  .filtro:hover{ border-color:var(--verde); }
+  .filtro.activo{ background:var(--verde); color:#fff; border-color:var(--verde); }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:1.25rem;
+  }
+
+  .card{
+    background:var(--tarjeta);
+    border:1px solid var(--linea);
+    border-radius:12px;
+    padding:1.25rem;
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+  }
+  .card .cat{ color:var(--verde); }
+  .card h3{ font-size:1.05rem; font-weight:600; letter-spacing:-.01em; }
+  .card .desc{ color:var(--tinta-sua); font-size:.9rem; }
+
+  .atributos{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.35rem;
+    margin-top:.2rem;
+  }
+  .attr{
+    background:var(--fondo);
+    border:1px solid var(--linea);
+    border-radius:6px;
+    padding:.15rem .5rem;
+    font-size:.75rem;
+    color:var(--tinta-sua);
+  }
+
+  .precios{
+    margin-top:auto;
+    padding-top:.8rem;
+    border-top:1px solid var(--linea);
+    display:flex;
+    flex-direction:column;
+    gap:.4rem;
+  }
+  .precio{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:.5rem;
+    font-size:.92rem;
+  }
+  .precio .nom{ color:var(--tinta-sua); }
+  .precio .val{ font-weight:600; }
+  .precio .bs{ color:var(--tinta-sua); font-size:.78rem; }
+
+  .stock{
+    font-size:.78rem;
+    color:var(--verde);
+    margin-top:.3rem;
+  }
+  .stock.agotado{ color:#B3261E; }
+
+  .estado{
+    padding:3rem 1rem;
+    text-align:center;
+    color:var(--tinta-sua);
+  }
+  .error{
+    background:#FDECEA;
+    border:1px solid #F5C6C0;
+    border-radius:10px;
+    padding:1.25rem;
+    color:#8C1D18;
+  }
+  .error code{
+    display:block;
+    margin-top:.6rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.8rem;
+    word-break:break-all;
+  }
+
+  footer{
+    border-top:1px solid var(--linea);
+    padding:var(--pad);
+    text-align:center;
+    color:var(--tinta-sua);
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <img src="plastiprama-logo-claro.png" alt="Plastiprama">
+    <span class="tasa mono" id="tasa">—</span>
+  </header>
+
+  <main>
+    <h1>Catálogo</h1>
+    <p class="sub" id="sub">Cargando productos…</p>
+
+    <div class="filtros" id="filtros"></div>
+    <div class="grid" id="grid"></div>
+    <div class="estado" id="estado"></div>
+  </main>
+
+  <footer class="mono">
+    <span id="pie">Plastiprama</span>
+  </footer>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://gkrzqtnionijaihchexj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6HY7ETq1bbuxGuigdB2A7A_FN7XpW6C';
+
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $grid    = document.getElementById('grid');
+const $estado  = document.getElementById('estado');
+const $filtros = document.getElementById('filtros');
+const $sub     = document.getElementById('sub');
+const $tasa    = document.getElementById('tasa');
+const $pie     = document.getElementById('pie');
+
+let tasa = null;
+let productos = [];
+let categoriaActiva = null;
+
+function mostrarError(titulo, detalle){
+  $estado.innerHTML =
+    `<div class="error"><strong>${titulo}</strong><code>${detalle}</code></div>`;
+}
+
+async function cargarConfiguracion(){
+  const { data, error } = await db
+    .from('configuracion')
+    .select('clave, valor');
+
+  if (error) return;
+
+  const c = Object.fromEntries(data.map(x => [x.clave, x.valor]));
+  if (c.negocio_nombre) {
+    document.title = 'Catálogo · ' + c.negocio_nombre;
+    $pie.textContent = c.negocio_nombre + (c.negocio_lema ? ' · ' + c.negocio_lema : '');
+  }
+}
+
+async function cargarTasa(){
+  const { data, error } = await db
+    .from('tasas_cambio')
+    .select('fecha, tasa_bcv')
+    .order('fecha', { ascending:false })
+    .limit(1);
+
+  if (!error && data && data.length) {
+    tasa = Number(data[0].tasa_bcv);
+    $tasa.textContent = 'Tasa BCV · ' + tasa.toFixed(2) + ' Bs';
+  }
+}
+
+async function cargarCatalogo(){
+  const { data, error } = await db
+    .from('productos')
+    .select(`
+      id, nombre, descripcion, tipo,
+      categorias ( nombre ),
+      variantes (
+        id, nombre, atributos, modo_inventario,
+        stock, mostrar_stock, activa, visible_publico,
+        presentaciones ( nombre, cantidad, precio_usd, tipo_precio, activa, visible_publico )
+      )
+    `)
+    .eq('activo', true)
+    .eq('visible_publico', true)
+    .order('orden');
+
+  if (error) {
+    mostrarError('No se pudo cargar el catálogo', error.message);
+    $sub.textContent = '';
+    return;
+  }
+
+  productos = (data || []).filter(p => p.tipo !== 'servicio');
+  $estado.textContent = '';
+  pintarFiltros();
+  pintar();
+}
+
+function pintarFiltros(){
+  const cats = [...new Set(productos.map(p => p.categorias?.nombre).filter(Boolean))];
+  if (cats.length < 2) return;
+
+  $filtros.innerHTML = '';
+  const todos = document.createElement('button');
+  todos.className = 'filtro activo';
+  todos.textContent = 'Todos';
+  todos.onclick = () => { categoriaActiva = null; marcar(todos); pintar(); };
+  $filtros.appendChild(todos);
+
+  cats.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'filtro';
+    b.textContent = c;
+    b.onclick = () => { categoriaActiva = c; marcar(b); pintar(); };
+    $filtros.appendChild(b);
+  });
+}
+
+function marcar(activo){
+  [...$filtros.children].forEach(b => b.classList.remove('activo'));
+  activo.classList.add('activo');
+}
+
+function bolivares(usd){
+  if (!tasa) return '';
+  return '<span class="bs">' + (usd * tasa).toLocaleString('es-VE',
+    { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' Bs</span>';
+}
+
+function pintar(){
+  const lista = categoriaActiva
+    ? productos.filter(p => p.categorias?.nombre === categoriaActiva)
+    : productos;
+
+  const tarjetas = [];
+
+  lista.forEach(p => {
+    (p.variantes || [])
+      .filter(v => v.activa && v.visible_publico)
+      .forEach(v => {
+        const pres = (v.presentaciones || [])
+          .filter(pr => pr.activa && pr.visible_publico);
+
+        if (!pres.length) return;
+
+        const attrs = Object.entries(v.atributos || {})
+          .map(([k, val]) => `<span class="attr">${k}: ${val}</span>`).join('');
+
+        const precios = pres.map(pr => {
+          const usd = Number(pr.precio_usd);
+          const etiqueta = pr.tipo_precio === 'por_kg' ? pr.nombre : pr.nombre;
+          return `<div class="precio">
+                    <span class="nom">${etiqueta}</span>
+                    <span class="val">$${usd.toFixed(2)} ${bolivares(usd)}</span>
+                  </div>`;
+        }).join('');
+
+        let stock = '';
+        if (v.mostrar_stock) {
+          const hay = Number(v.stock) > 0;
+          stock = `<div class="stock ${hay ? '' : 'agotado'}">
+                     ${hay ? 'Disponible' : 'Agotado'}
+                   </div>`;
+        }
+
+        tarjetas.push(`
+          <article class="card">
+            <span class="cat mono">${p.categorias?.nombre || ''}</span>
+            <h3>${p.nombre} — ${v.nombre}</h3>
+            ${p.descripcion ? `<p class="desc">${p.descripcion}</p>` : ''}
+            <div class="atributos">${attrs}</div>
+            <div class="precios">${precios}</div>
+            ${stock}
+          </article>
+        `);
+      });
+  });
+
+  $grid.innerHTML = tarjetas.join('');
+  $sub.textContent = tarjetas.length
+    ? `${tarjetas.length} producto${tarjetas.length === 1 ? '' : 's'} disponibles`
+    : 'No hay productos publicados todavía.';
+}
+
+// Prueba de seguridad: esto DEBE fallar.
+// Si devuelve datos, las políticas no están protegiendo la tabla de clientes.
+async function probarSeguridad(){
+  const { data, error } = await db.from('clientes').select('nombre').limit(1);
+  if (!error && data && data.length) {
+    console.error('ALERTA DE SEGURIDAD: la tabla clientes es accesible al público.');
+  } else {
+    console.log('Seguridad OK: la tabla clientes no es accesible al público.');
+  }
+
+  const { data: v } = await db.from('variantes').select('costo_usd').limit(1);
+  if (v && v.length && v[0].costo_usd !== undefined && v[0].costo_usd !== null) {
+    console.error('ALERTA DE SEGURIDAD: el costo es visible al público.');
+  } else {
+    console.log('Seguridad OK: el costo no es visible al público.');
+  }
+}
+
+await cargarConfiguracion();
+await cargarTasa();
+await cargarCatalogo();
+await probarSeguridad();
+</script>
+
+</body>
+</html>
