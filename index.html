@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plastiprama · Plásticos, asistencia y solución</title>
+<meta name="description" content="Distribución de plásticos y empaques al mayor en Venezuela. Bolsas, rollos, mangas y empaques por paquete y por kilo.">
+
+<link rel="icon" type="image/png" href="favicon-512.png.png">
+<link rel="apple-touch-icon" href="favicon-512.png.png">
+
+<meta property="og:title" content="Plastiprama · Plásticos, asistencia y solución">
+<meta property="og:description" content="Distribución de plásticos y empaques al mayor. Cotiza por WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://plastiprama.com">
+<meta property="og:image" content="https://plastiprama.com/plastiprama-logo-claro.png.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --verde:      #468E28;
+    --verde-osc:  #35701D;
+    --tinta:      #101410;
+    --tinta-sua:  #5A635A;
+    --fondo:      #F4F6F3;
+    --fondo-2:    #E7EBE5;
+    --linea:      rgba(16,20,16,.13);
+    --pad: clamp(1.5rem, 5vw, 4.5rem);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    background:var(--fondo);
+    color:var(--tinta);
+    font-family:'Archivo', system-ui, sans-serif;
+    line-height:1.55;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono', ui-monospace, monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- encabezado ---------- */
+  header{
+    padding:var(--pad) var(--pad) 0;
+    display:flex;
+    justify-content:center;
+  }
+  .logo{
+    width:clamp(230px, 40vw, 380px);
+    height:auto;
+    display:block;
+  }
+
+  /* ---------- contenido ---------- */
+  main{
+    flex:1;
+    width:100%;
+    max-width:920px;
+    margin:0 auto;
+    padding:clamp(2.5rem,6vw,4rem) var(--pad) var(--pad);
+    text-align:center;
+  }
+
+  .eyebrow{
+    color:var(--verde);
+    margin-bottom:clamp(1rem,3vw,1.5rem);
+  }
+
+  h1{
+    font-weight:800;
+    font-size:clamp(2.1rem, 6.5vw, 4rem);
+    line-height:1.02;
+    letter-spacing:-.035em;
+    max-width:16ch;
+    margin:0 auto;
+  }
+  h1 em{ font-style:normal; color:var(--verde); }
+
+  .intro{
+    margin:clamp(1.5rem,3.5vw,2rem) auto 0;
+    max-width:52ch;
+    font-size:clamp(1rem,1.8vw,1.15rem);
+    color:var(--tinta-sua);
+  }
+
+  /* ---------- lo que viene ---------- */
+  .estado{
+    margin-top:clamp(2.75rem,6vw,4rem);
+    border-top:1px solid var(--linea);
+    text-align:left;
+  }
+  .linea{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    padding:1rem .25rem;
+    border-bottom:1px solid var(--linea);
+    color:var(--tinta-sua);
+  }
+  .linea strong{ color:var(--tinta); font-weight:500; }
+  .punto{
+    display:inline-block;
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--verde);
+    margin-right:.7rem;
+    vertical-align:middle;
+  }
+
+  /* ---------- acción ---------- */
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:.8rem;
+    margin-top:clamp(2.5rem,5vw,3.25rem);
+    padding:1.1rem 2rem;
+    background:var(--verde);
+    color:#fff;
+    text-decoration:none;
+    border-radius:999px;
+    font-weight:600;
+    font-size:1.03rem;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .cta:hover{ background:var(--verde-osc); transform:translateY(-2px); }
+  .cta:focus-visible{ outline:3px solid var(--tinta); outline-offset:3px; }
+  .cta .flecha{ transition:transform .18s ease; }
+  .cta:hover .flecha{ transform:translateX(4px); }
+
+  .nota{
+    display:block;
+    margin-top:.9rem;
+    color:var(--tinta-sua);
+  }
+
+  /* ---------- pie ---------- */
+  footer{
+    margin-top:auto;
+    padding:var(--pad);
+    border-top:1px solid var(--linea);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:.5rem 1.5rem;
+    color:var(--tinta-sua);
+  }
+
+  @media (max-width:600px){
+    .cta{ width:100%; justify-content:center; }
+    footer{ justify-content:center; text-align:center; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <img class="logo" src="plastiprama-logo-claro.png.png"
+         alt="Plastiprama · Plásticos, asistencia y solución">
+  </header>
+
+  <main>
+    <p class="eyebrow mono">Distribución al mayor · Venezuela</p>
+
+    <h1>Estamos montando <em>nuestra tienda</em> en línea</h1>
+
+    <p class="intro">
+      Bolsas, rollos, mangas y empaques — por paquete y por kilo.
+      Mientras terminamos el catálogo, escríbenos y te cotizamos el mismo día.
+    </p>
+
+    <section class="estado">
+      <div class="linea mono">
+        <strong><span class="punto"></span>Catálogo en línea</strong>
+        <span>En construcción</span>
+      </div>
+      <div class="linea mono">
+        <strong><span class="punto"></span>Pedidos y seguimiento</strong>
+        <span>Próximamente</span>
+      </div>
+      <div class="linea mono">
+        <strong><span class="punto"></span>Facturación digital</strong>
+        <span>Próximamente</span>
+      </div>
+    </section>
+
+    <!-- ⚠️ CAMBIA EL NÚMERO: 58 + código de área sin el 0 + número -->
+    <a class="cta"
+       href="https://wa.me/584222029333?text=Hola%2C%20quiero%20cotizar."
+       target="_blank" rel="noopener">
+      Cotizar por WhatsApp
+      <span class="flecha" aria-hidden="true">→</span>
+    </a>
+    <span class="nota mono">Respondemos de lunes a viernes</span>
+  </main>
+
+  <footer class="mono">
+    <span>Plastiprama · Plásticos, asistencia y solución</span>
+    <span>plastiprama.com</span>
+  </footer>
+
+</body>
+</html>
