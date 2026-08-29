@@ -96,6 +96,31 @@
     gap:1.25rem;
   }
 
+  .foto{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+    border-radius:8px;
+    background:var(--fondo);
+    border:1px solid var(--linea);
+    margin-bottom:.2rem;
+  }
+  .sin-foto{
+    width:100%;
+    aspect-ratio:4/3;
+    border-radius:8px;
+    background:var(--fondo);
+    border:1px dashed var(--linea);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--tinta-sua);
+    font-size:.75rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
   .card{
     background:var(--tarjeta);
     border:1px solid var(--linea);
@@ -253,10 +278,10 @@ async function cargarCatalogo(){
   const { data, error } = await db
     .from('productos')
     .select(`
-      id, nombre, descripcion, tipo,
+      id, nombre, descripcion, tipo, imagenes,
       categorias ( nombre ),
       variantes (
-        id, nombre, atributos, modo_inventario,
+        id, nombre, atributos, modo_inventario, imagen_url,
         stock, mostrar_stock, activa, visible_publico,
         presentaciones ( nombre, cantidad, precio_usd, tipo_precio, activa, visible_publico )
       )
@@ -344,8 +369,16 @@ function pintar(){
                    </div>`;
         }
 
+        const foto = v.imagen_url
+          || (Array.isArray(p.imagenes) && p.imagenes.length ? p.imagenes[0] : null);
+
+        const bloqueFoto = foto
+          ? `<img class="foto" src="${foto}" alt="${p.nombre} ${v.nombre}" loading="lazy">`
+          : `<div class="sin-foto">Sin foto</div>`;
+
         tarjetas.push(`
           <article class="card">
+            ${bloqueFoto}
             <span class="cat mono">${p.categorias?.nombre || ''}</span>
             <h3>${p.nombre} — ${v.nombre}</h3>
             ${p.descripcion ? `<p class="desc">${p.descripcion}</p>` : ''}
