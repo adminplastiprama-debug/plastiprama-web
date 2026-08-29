@@ -96,15 +96,68 @@
     gap:1.25rem;
   }
 
+  .galeria{
+    position:relative;
+    margin-bottom:.2rem;
+  }
+  .pista{
+    display:flex;
+    gap:.4rem;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    border-radius:8px;
+  }
+  .pista::-webkit-scrollbar{ display:none; }
+
   .foto{
+    flex:0 0 100%;
     width:100%;
     aspect-ratio:4/3;
     object-fit:cover;
     border-radius:8px;
     background:var(--fondo);
     border:1px solid var(--linea);
-    margin-bottom:.2rem;
+    scroll-snap-align:center;
   }
+
+  .puntos{
+    display:flex;
+    justify-content:center;
+    gap:.35rem;
+    margin-top:.45rem;
+  }
+  .punto{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--linea);
+    border:none;
+    padding:0;
+    cursor:pointer;
+    transition:.2s;
+  }
+  .punto.on{ background:var(--verde); width:16px; border-radius:3px; }
+
+  .flecha{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:30px; height:30px;
+    border-radius:50%;
+    border:1px solid var(--linea);
+    background:rgba(255,255,255,.92);
+    color:var(--tinta);
+    cursor:pointer;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    font-size:1rem;
+    line-height:1;
+  }
+  .galeria:hover .flecha{ display:flex; }
+  .flecha.izq{ left:.4rem; }
+  .flecha.der{ right:.4rem; }
+  @media (hover:none){ .flecha{ display:none !important; } }
   .sin-foto{
     width:100%;
     aspect-ratio:4/3;
@@ -333,6 +386,8 @@ function bolivares(usd){
     { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' Bs</span>';
 }
 
+let contador = 0;
+
 function pintar(){
   const lista = categoriaActiva
     ? productos.filter(p => p.categorias?.nombre === categoriaActiva)
@@ -369,12 +424,36 @@ function pintar(){
                    </div>`;
         }
 
-        const foto = v.imagen_url
-          || (Array.isArray(p.imagenes) && p.imagenes.length ? p.imagenes[0] : null);
+        let fotos = [];
+        if (v.imagen_url) fotos.push(v.imagen_url);
+        if (Array.isArray(p.imagenes)) fotos = fotos.concat(p.imagenes);
+        fotos = [...new Set(fotos.filter(Boolean))];
 
-        const bloqueFoto = foto
-          ? `<img class="foto" src="${foto}" alt="${p.nombre} ${v.nombre}" loading="lazy">`
-          : `<div class="sin-foto">Sin foto</div>`;
+        const gid = 'g' + (++contador);
+        let bloqueFoto;
+
+        if (!fotos.length) {
+          bloqueFoto = `<div class="sin-foto">Sin foto</div>`;
+        } else if (fotos.length === 1) {
+          bloqueFoto = `<div class="galeria"><div class="pista">
+              <img class="foto" src="${fotos[0]}" alt="${p.nombre} ${v.nombre}" loading="lazy">
+            </div></div>`;
+        } else {
+          const imgs = fotos.map((f,i) =>
+            `<img class="foto" src="${f}" alt="${p.nombre} ${v.nombre} ${i+1}" loading="lazy">`
+          ).join('');
+          const puntos = fotos.map((_,i) =>
+            `<button class="punto ${i===0?'on':''}" data-g="${gid}" data-i="${i}"
+                     aria-label="Foto ${i+1}"></button>`
+          ).join('');
+          bloqueFoto = `
+            <div class="galeria" id="${gid}">
+              <div class="pista">${imgs}</div>
+              <button class="flecha izq" data-g="${gid}" data-d="-1" aria-label="Anterior">‹</button>
+              <button class="flecha der" data-g="${gid}" data-d="1"  aria-label="Siguiente">›</button>
+              <div class="puntos">${puntos}</div>
+            </div>`;
+        }
 
         tarjetas.push(`
           <article class="card">
@@ -391,6 +470,7 @@ function pintar(){
   });
 
   $grid.innerHTML = tarjetas.join('');
+  activarGalerias();
   $sub.textContent = tarjetas.length
     ? `${tarjetas.length} producto${tarjetas.length === 1 ? '' : 's'} disponibles`
     : 'No hay productos publicados todavía.';
@@ -412,6 +492,33 @@ async function probarSeguridad(){
   } else {
     console.log('Seguridad OK: el costo no es visible al público.');
   }
+}
+
+function activarGalerias(){
+  document.querySelectorAll('.flecha').forEach(b => {
+    b.onclick = () => {
+      const pista = document.getElementById(b.dataset.g).querySelector('.pista');
+      pista.scrollBy({ left: pista.clientWidth * Number(b.dataset.d), behavior:'smooth' });
+    };
+  });
+
+  document.querySelectorAll('.punto').forEach(b => {
+    b.onclick = () => {
+      const pista = document.getElementById(b.dataset.g).querySelector('.pista');
+      pista.scrollTo({ left: pista.clientWidth * Number(b.dataset.i), behavior:'smooth' });
+    };
+  });
+
+  document.querySelectorAll('.galeria').forEach(g => {
+    const pista  = g.querySelector('.pista');
+    const puntos = g.querySelectorAll('.punto');
+    if (!puntos.length) return;
+
+    pista.addEventListener('scroll', () => {
+      const i = Math.round(pista.scrollLeft / pista.clientWidth);
+      puntos.forEach((p, n) => p.classList.toggle('on', n === i));
+    }, { passive:true });
+  });
 }
 
 await cargarConfiguracion();
