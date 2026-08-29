@@ -33,6 +33,7 @@
     line-height:1.5;
     min-height:100vh;
   }
+  body.bloqueado{ overflow:hidden; }
 
   .mono{
     font-family:'IBM Plex Mono', ui-monospace, monospace;
@@ -41,6 +42,7 @@
     text-transform:uppercase;
   }
 
+  /* ---------- encabezado ---------- */
   header{
     background:var(--tarjeta);
     border-bottom:1px solid var(--linea);
@@ -69,13 +71,13 @@
     letter-spacing:-.03em;
     margin-bottom:.4rem;
   }
-  .sub{ color:var(--tinta-sua); margin-bottom:2rem; }
+  .sub{ color:var(--tinta-sua); margin-bottom:1.75rem; }
 
   .filtros{
     display:flex;
     flex-wrap:wrap;
     gap:.5rem;
-    margin-bottom:2rem;
+    margin-bottom:1.75rem;
   }
   .filtro{
     padding:.5rem 1rem;
@@ -90,149 +92,208 @@
   .filtro:hover{ border-color:var(--verde); }
   .filtro.activo{ background:var(--verde); color:#fff; border-color:var(--verde); }
 
+  /* ---------- tarjetas ---------- */
   .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
     gap:1.25rem;
-  }
-
-  .galeria{
-    position:relative;
-    margin-bottom:.2rem;
-  }
-  .pista{
-    display:flex;
-    gap:.4rem;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    scrollbar-width:none;
-    border-radius:8px;
-  }
-  .pista::-webkit-scrollbar{ display:none; }
-
-  .foto{
-    flex:0 0 100%;
-    width:100%;
-    aspect-ratio:4/3;
-    object-fit:cover;
-    border-radius:8px;
-    background:var(--fondo);
-    border:1px solid var(--linea);
-    scroll-snap-align:center;
-  }
-
-  .puntos{
-    display:flex;
-    justify-content:center;
-    gap:.35rem;
-    margin-top:.45rem;
-  }
-  .punto{
-    width:6px; height:6px;
-    border-radius:50%;
-    background:var(--linea);
-    border:none;
-    padding:0;
-    cursor:pointer;
-    transition:.2s;
-  }
-  .punto.on{ background:var(--verde); width:16px; border-radius:3px; }
-
-  .flecha{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    width:30px; height:30px;
-    border-radius:50%;
-    border:1px solid var(--linea);
-    background:rgba(255,255,255,.92);
-    color:var(--tinta);
-    cursor:pointer;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    font-size:1rem;
-    line-height:1;
-  }
-  .galeria:hover .flecha{ display:flex; }
-  .flecha.izq{ left:.4rem; }
-  .flecha.der{ right:.4rem; }
-  @media (hover:none){ .flecha{ display:none !important; } }
-  .sin-foto{
-    width:100%;
-    aspect-ratio:4/3;
-    border-radius:8px;
-    background:var(--fondo);
-    border:1px dashed var(--linea);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--tinta-sua);
-    font-size:.75rem;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    font-family:'IBM Plex Mono', monospace;
   }
 
   .card{
     background:var(--tarjeta);
     border:1px solid var(--linea);
     border-radius:12px;
-    padding:1.25rem;
+    overflow:hidden;
+    cursor:pointer;
+    text-align:left;
+    font-family:inherit;
     display:flex;
     flex-direction:column;
-    gap:.6rem;
+    transition:transform .15s, box-shadow .15s, border-color .15s;
   }
-  .card .cat{ color:var(--verde); }
-  .card h3{ font-size:1.05rem; font-weight:600; letter-spacing:-.01em; }
-  .card .desc{ color:var(--tinta-sua); font-size:.9rem; }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 22px rgba(16,20,16,.09);
+    border-color:var(--verde);
+  }
+  .card:focus-visible{ outline:3px solid var(--verde); outline-offset:2px; }
 
-  .atributos{
-    display:flex;
-    flex-wrap:wrap;
-    gap:.35rem;
-    margin-top:.2rem;
-  }
-  .attr{
+  .foto{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
     background:var(--fondo);
-    border:1px solid var(--linea);
-    border-radius:6px;
-    padding:.15rem .5rem;
-    font-size:.75rem;
+    display:block;
+  }
+  .sin-foto{
+    width:100%;
+    aspect-ratio:4/3;
+    background:var(--fondo);
+    display:flex;
+    align-items:center;
+    justify-content:center;
     color:var(--tinta-sua);
+    font-size:.7rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    font-family:'IBM Plex Mono', monospace;
+    border-bottom:1px solid var(--linea);
   }
 
-  .precios{
-    margin-top:auto;
-    padding-top:.8rem;
-    border-top:1px solid var(--linea);
+  .cuerpo{
+    padding:1rem;
     display:flex;
     flex-direction:column;
+    gap:.35rem;
+    flex:1;
+  }
+  .cuerpo .cat{ color:var(--verde); }
+  .cuerpo h3{ font-size:1.02rem; font-weight:600; letter-spacing:-.01em; }
+  .medidas{ color:var(--tinta-sua); font-size:.85rem; }
+
+  .desde{
+    margin-top:auto;
+    padding-top:.7rem;
+    display:flex;
+    align-items:baseline;
     gap:.4rem;
   }
-  .precio{
+  .desde .lbl{ color:var(--tinta-sua); font-size:.78rem; }
+  .desde .val{ font-weight:700; font-size:1.1rem; }
+
+  /* ---------- ficha ---------- */
+  .fondo-ficha{
+    position:fixed;
+    inset:0;
+    background:rgba(16,20,16,.5);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:2rem 1rem;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .fondo-ficha.abierto{ display:flex; }
+
+  .ficha{
+    background:var(--tarjeta);
+    border-radius:14px;
+    max-width:920px;
+    width:100%;
+    overflow:hidden;
+    position:relative;
+  }
+
+  .cerrar{
+    position:absolute;
+    top:.9rem; right:.9rem;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1px solid var(--linea);
+    background:rgba(255,255,255,.95);
+    cursor:pointer;
+    font-size:1.15rem;
+    line-height:1;
+    z-index:2;
+  }
+
+  .ficha-top{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+  }
+  @media (max-width:720px){
+    .ficha-top{ grid-template-columns:1fr; }
+  }
+
+  .galeria{ position:relative; background:var(--fondo); }
+  .pista{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    height:100%;
+  }
+  .pista::-webkit-scrollbar{ display:none; }
+  .pista img{
+    flex:0 0 100%;
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    scroll-snap-align:center;
+  }
+  .puntos{
+    position:absolute;
+    bottom:.8rem; left:0; right:0;
+    display:flex;
+    justify-content:center;
+    gap:.35rem;
+  }
+  .punto{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:rgba(255,255,255,.6);
+    border:1px solid rgba(16,20,16,.2);
+    padding:0; cursor:pointer;
+    transition:.2s;
+  }
+  .punto.on{ background:var(--verde); width:18px; border-radius:4px; }
+
+  .ficha-info{ padding:2rem 1.75rem 1.5rem; }
+  .ficha-info .cat{ color:var(--verde); }
+  .ficha-info h2{
+    font-size:1.6rem;
+    font-weight:800;
+    letter-spacing:-.025em;
+    margin:.4rem 0 .6rem;
+  }
+  .ficha-info .desc{ color:var(--tinta-sua); margin-bottom:1.25rem; }
+
+  .especificaciones{
+    border-top:1px solid var(--linea);
+    padding-top:1rem;
+  }
+  .espec{
     display:flex;
     justify-content:space-between;
-    align-items:baseline;
-    gap:.5rem;
-    font-size:.92rem;
+    gap:1rem;
+    padding:.4rem 0;
+    font-size:.9rem;
+    border-bottom:1px solid var(--linea);
   }
-  .precio .nom{ color:var(--tinta-sua); }
-  .precio .val{ font-weight:600; }
-  .precio .bs{ color:var(--tinta-sua); font-size:.78rem; }
+  .espec .k{ color:var(--tinta-sua); }
+  .espec .v{ font-weight:500; text-align:right; }
 
-  .stock{
-    font-size:.78rem;
-    color:var(--verde);
-    margin-top:.3rem;
-  }
-  .stock.agotado{ color:#B3261E; }
-
-  .estado{
-    padding:3rem 1rem;
-    text-align:center;
+  /* tabla de medidas */
+  .ficha-tabla{ padding:0 1.75rem 2rem; }
+  .ficha-tabla h4{
+    margin-bottom:.9rem;
     color:var(--tinta-sua);
   }
+  .tabla{ width:100%; border-collapse:collapse; font-size:.92rem; }
+  .tabla th{
+    text-align:left;
+    padding:.6rem .5rem;
+    border-bottom:2px solid var(--linea);
+    color:var(--tinta-sua);
+    font-weight:500;
+    font-size:.78rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .tabla td{
+    padding:.65rem .5rem;
+    border-bottom:1px solid var(--linea);
+  }
+  .tabla td.num{ text-align:right; font-variant-numeric:tabular-nums; }
+  .tabla .bs{ color:var(--tinta-sua); font-size:.78rem; display:block; }
+  .tabla tr:hover td{ background:var(--fondo); }
+  .medida-nom{ font-weight:600; }
+
+  .agotado{ color:#B3261E; font-size:.78rem; }
+
+  .estado{ padding:3rem 1rem; text-align:center; color:var(--tinta-sua); }
   .error{
     background:#FDECEA;
     border:1px solid #F5C6C0;
@@ -272,16 +333,17 @@
     <div class="estado" id="estado"></div>
   </main>
 
-  <footer class="mono">
-    <span id="pie">Plastiprama</span>
-  </footer>
+  <footer class="mono"><span id="pie">Plastiprama</span></footer>
+
+  <div class="fondo-ficha" id="fondoFicha">
+    <div class="ficha" id="ficha"></div>
+  </div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const SUPABASE_URL = 'https://gkrzqtnionijaihchexj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_6HY7ETq1bbuxGuigdB2A7A_FN7XpW6C';
-
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $grid    = document.getElementById('grid');
@@ -290,25 +352,44 @@ const $filtros = document.getElementById('filtros');
 const $sub     = document.getElementById('sub');
 const $tasa    = document.getElementById('tasa');
 const $pie     = document.getElementById('pie');
+const $fondo   = document.getElementById('fondoFicha');
+const $ficha   = document.getElementById('ficha');
 
 let tasa = null;
 let productos = [];
 let categoriaActiva = null;
 
-function mostrarError(titulo, detalle){
-  $estado.innerHTML =
-    `<div class="error"><strong>${titulo}</strong><code>${detalle}</code></div>`;
+const esc = t => String(t ?? '').replace(/[&<>"']/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function bs(usd){
+  if (!tasa) return '';
+  return (usd * tasa).toLocaleString('es-VE',
+    { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' Bs';
+}
+
+function fotosDe(p, v){
+  let f = [];
+  if (v?.imagen_url) f.push(v.imagen_url);
+  if (Array.isArray(p.imagenes)) f = f.concat(p.imagenes);
+  return [...new Set(f.filter(Boolean))];
+}
+
+function variantesVisibles(p){
+  return (p.variantes || [])
+    .filter(v => v.activa && v.visible_publico)
+    .map(v => ({
+      ...v,
+      pres: (v.presentaciones || []).filter(pr => pr.activa && pr.visible_publico)
+    }))
+    .filter(v => v.pres.length);
 }
 
 async function cargarConfiguracion(){
-  const { data, error } = await db
-    .from('configuracion')
-    .select('clave, valor');
-
+  const { data, error } = await db.from('configuracion').select('clave, valor');
   if (error) return;
-
   const c = Object.fromEntries(data.map(x => [x.clave, x.valor]));
-  if (c.negocio_nombre) {
+  if (c.negocio_nombre){
     document.title = 'Catálogo · ' + c.negocio_nombre;
     $pie.textContent = c.negocio_nombre + (c.negocio_lema ? ' · ' + c.negocio_lema : '');
   }
@@ -320,8 +401,7 @@ async function cargarTasa(){
     .select('fecha, tasa_bcv')
     .order('fecha', { ascending:false })
     .limit(1);
-
-  if (!error && data && data.length) {
+  if (!error && data?.length){
     tasa = Number(data[0].tasa_bcv);
     $tasa.textContent = 'Tasa BCV · ' + tasa.toFixed(2) + ' Bs';
   }
@@ -332,24 +412,32 @@ async function cargarCatalogo(){
     .from('productos')
     .select(`
       id, nombre, descripcion, tipo, imagenes,
+      material, material_variante, nombre_tecnico,
       categorias ( nombre ),
       variantes (
         id, nombre, atributos, modo_inventario, imagen_url,
         stock, mostrar_stock, activa, visible_publico,
-        presentaciones ( nombre, cantidad, precio_usd, tipo_precio, activa, visible_publico )
+        peso_unitario_kg,
+        presentaciones ( nombre, cantidad, precio_usd, tipo_precio,
+                         activa, visible_publico, orden )
       )
     `)
     .eq('activo', true)
     .eq('visible_publico', true)
     .order('orden');
 
-  if (error) {
-    mostrarError('No se pudo cargar el catálogo', error.message);
+  if (error){
+    $estado.innerHTML =
+      `<div class="error"><strong>No se pudo cargar el catálogo</strong>
+       <code>${esc(error.message)}</code></div>`;
     $sub.textContent = '';
     return;
   }
 
-  productos = (data || []).filter(p => p.tipo !== 'servicio');
+  productos = (data || [])
+    .filter(p => p.tipo !== 'servicio')
+    .filter(p => variantesVisibles(p).length);
+
   $estado.textContent = '';
   pintarFiltros();
   pintar();
@@ -380,145 +468,190 @@ function marcar(activo){
   activo.classList.add('activo');
 }
 
-function bolivares(usd){
-  if (!tasa) return '';
-  return '<span class="bs">' + (usd * tasa).toLocaleString('es-VE',
-    { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' Bs</span>';
-}
-
-let contador = 0;
-
 function pintar(){
   const lista = categoriaActiva
     ? productos.filter(p => p.categorias?.nombre === categoriaActiva)
     : productos;
 
-  const tarjetas = [];
+  $grid.innerHTML = lista.map(p => {
+    const vars  = variantesVisibles(p);
+    const fotos = fotosDe(p, null);
 
-  lista.forEach(p => {
-    (p.variantes || [])
-      .filter(v => v.activa && v.visible_publico)
-      .forEach(v => {
-        const pres = (v.presentaciones || [])
-          .filter(pr => pr.activa && pr.visible_publico);
+    const precios = vars.flatMap(v => v.pres.map(pr => Number(pr.precio_usd)));
+    const minimo  = precios.length ? Math.min(...precios) : null;
 
-        if (!pres.length) return;
+    const resumen = vars.length === 1
+      ? esc(vars[0].nombre)
+      : `${vars.length} presentaciones disponibles`;
 
-        const attrs = Object.entries(v.atributos || {})
-          .map(([k, val]) => `<span class="attr">${k}: ${val}</span>`).join('');
+    const img = fotos.length
+      ? `<img class="foto" src="${esc(fotos[0])}" alt="${esc(p.nombre)}" loading="lazy">`
+      : `<div class="sin-foto">Sin foto</div>`;
 
-        const precios = pres.map(pr => {
-          const usd = Number(pr.precio_usd);
-          const etiqueta = pr.tipo_precio === 'por_kg' ? pr.nombre : pr.nombre;
-          return `<div class="precio">
-                    <span class="nom">${etiqueta}</span>
-                    <span class="val">$${usd.toFixed(2)} ${bolivares(usd)}</span>
-                  </div>`;
-        }).join('');
+    return `
+      <button class="card" data-id="${p.id}">
+        ${img}
+        <div class="cuerpo">
+          <span class="cat mono">${esc(p.categorias?.nombre || '')}</span>
+          <h3>${esc(p.nombre)}</h3>
+          <span class="medidas">${resumen}</span>
+          ${minimo !== null ? `
+            <div class="desde">
+              <span class="lbl">Desde</span>
+              <span class="val">$${minimo.toFixed(2)}</span>
+            </div>` : ''}
+        </div>
+      </button>`;
+  }).join('');
 
-        let stock = '';
-        if (v.mostrar_stock) {
-          const hay = Number(v.stock) > 0;
-          stock = `<div class="stock ${hay ? '' : 'agotado'}">
-                     ${hay ? 'Disponible' : 'Agotado'}
-                   </div>`;
-        }
-
-        let fotos = [];
-        if (v.imagen_url) fotos.push(v.imagen_url);
-        if (Array.isArray(p.imagenes)) fotos = fotos.concat(p.imagenes);
-        fotos = [...new Set(fotos.filter(Boolean))];
-
-        const gid = 'g' + (++contador);
-        let bloqueFoto;
-
-        if (!fotos.length) {
-          bloqueFoto = `<div class="sin-foto">Sin foto</div>`;
-        } else if (fotos.length === 1) {
-          bloqueFoto = `<div class="galeria"><div class="pista">
-              <img class="foto" src="${fotos[0]}" alt="${p.nombre} ${v.nombre}" loading="lazy">
-            </div></div>`;
-        } else {
-          const imgs = fotos.map((f,i) =>
-            `<img class="foto" src="${f}" alt="${p.nombre} ${v.nombre} ${i+1}" loading="lazy">`
-          ).join('');
-          const puntos = fotos.map((_,i) =>
-            `<button class="punto ${i===0?'on':''}" data-g="${gid}" data-i="${i}"
-                     aria-label="Foto ${i+1}"></button>`
-          ).join('');
-          bloqueFoto = `
-            <div class="galeria" id="${gid}">
-              <div class="pista">${imgs}</div>
-              <button class="flecha izq" data-g="${gid}" data-d="-1" aria-label="Anterior">‹</button>
-              <button class="flecha der" data-g="${gid}" data-d="1"  aria-label="Siguiente">›</button>
-              <div class="puntos">${puntos}</div>
-            </div>`;
-        }
-
-        tarjetas.push(`
-          <article class="card">
-            ${bloqueFoto}
-            <span class="cat mono">${p.categorias?.nombre || ''}</span>
-            <h3>${p.nombre} — ${v.nombre}</h3>
-            ${p.descripcion ? `<p class="desc">${p.descripcion}</p>` : ''}
-            <div class="atributos">${attrs}</div>
-            <div class="precios">${precios}</div>
-            ${stock}
-          </article>
-        `);
-      });
+  $grid.querySelectorAll('.card').forEach(c => {
+    c.onclick = () => abrirFicha(Number(c.dataset.id));
   });
 
-  $grid.innerHTML = tarjetas.join('');
-  activarGalerias();
-  $sub.textContent = tarjetas.length
-    ? `${tarjetas.length} producto${tarjetas.length === 1 ? '' : 's'} disponibles`
+  $sub.textContent = lista.length
+    ? `${lista.length} producto${lista.length === 1 ? '' : 's'} en el catálogo`
     : 'No hay productos publicados todavía.';
 }
 
-// Prueba de seguridad: esto DEBE fallar.
-// Si devuelve datos, las políticas no están protegiendo la tabla de clientes.
-async function probarSeguridad(){
-  const { data, error } = await db.from('clientes').select('nombre').limit(1);
-  if (!error && data && data.length) {
-    console.error('ALERTA DE SEGURIDAD: la tabla clientes es accesible al público.');
-  } else {
-    console.log('Seguridad OK: la tabla clientes no es accesible al público.');
-  }
+const ETIQUETAS = {
+  ancho_cm:'Ancho', largo_cm:'Largo', alto_cm:'Alto',
+  solapa_cm:'Solapa', calibre_mm:'Calibre', litros:'Capacidad',
+  densidad:'Densidad', color:'Color', tipo:'Tipo',
+  capacidad_kg:'Capacidad'
+};
+const UNIDADES = {
+  ancho_cm:' cm', largo_cm:' cm', alto_cm:' cm',
+  solapa_cm:' cm', calibre_mm:' mm', litros:' L', capacidad_kg:' kg'
+};
 
-  const { data: v } = await db.from('variantes').select('costo_usd').limit(1);
-  if (v && v.length && v[0].costo_usd !== undefined && v[0].costo_usd !== null) {
-    console.error('ALERTA DE SEGURIDAD: el costo es visible al público.');
-  } else {
-    console.log('Seguridad OK: el costo no es visible al público.');
+function abrirFicha(id){
+  const p = productos.find(x => x.id === id);
+  if (!p) return;
+
+  const vars  = variantesVisibles(p);
+  const fotos = fotosDe(p, null);
+
+  // Atributos que son iguales en todas las variantes: van a la ficha general.
+  // Los que varían van en la tabla de medidas.
+  const claves = [...new Set(vars.flatMap(v => Object.keys(v.atributos || {})))];
+  const comunes = {}, variables = [];
+
+  claves.forEach(k => {
+    const valores = [...new Set(vars.map(v => String(v.atributos?.[k] ?? '')))];
+    if (valores.length === 1 && valores[0] !== '') comunes[k] = valores[0];
+    else variables.push(k);
+  });
+
+  const galeria = fotos.length ? `
+    <div class="galeria">
+      <div class="pista" id="pistaFicha">
+        ${fotos.map(f => `<img src="${esc(f)}" alt="${esc(p.nombre)}" loading="lazy">`).join('')}
+      </div>
+      ${fotos.length > 1 ? `<div class="puntos">
+        ${fotos.map((_,i) => `<button class="punto ${i===0?'on':''}" data-i="${i}"
+                                      aria-label="Foto ${i+1}"></button>`).join('')}
+      </div>` : ''}
+    </div>` : `<div class="sin-foto">Sin foto</div>`;
+
+  const specs = [];
+  if (p.material) specs.push(['Material',
+    p.material + (p.material_variante ? ', ' + p.material_variante : '')]);
+  if (p.nombre_tecnico) specs.push(['Nombre técnico', p.nombre_tecnico]);
+  Object.entries(comunes).forEach(([k, v]) =>
+    specs.push([ETIQUETAS[k] || k, v + (UNIDADES[k] || '')]));
+
+  // Columnas de precio: todas las presentaciones que existan
+  const nombresPres = [...new Set(vars.flatMap(v => v.pres.map(pr => pr.nombre)))];
+
+  const filas = vars.map(v => {
+    const cols = nombresPres.map(np => {
+      const pr = v.pres.find(x => x.nombre === np);
+      if (!pr) return `<td class="num">—</td>`;
+      const usd = Number(pr.precio_usd);
+      return `<td class="num"><strong>$${usd.toFixed(2)}</strong>
+                <span class="bs">${bs(usd)}</span></td>`;
+    }).join('');
+
+    const detalle = variables
+      .map(k => v.atributos?.[k] != null
+        ? `${ETIQUETAS[k] || k}: ${v.atributos[k]}${UNIDADES[k] || ''}` : null)
+      .filter(Boolean).join(' · ');
+
+    const peso = v.peso_unitario_kg
+      ? `<span class="bs">${(v.peso_unitario_kg * 1000).toFixed(2)} g c/u</span>` : '';
+
+    return `<tr>
+      <td><span class="medida-nom">${esc(v.nombre)}</span>
+          ${detalle ? `<span class="bs">${esc(detalle)}</span>` : ''}
+          ${peso}</td>
+      ${cols}
+    </tr>`;
+  }).join('');
+
+  $ficha.innerHTML = `
+    <button class="cerrar" id="btnCerrar" aria-label="Cerrar">×</button>
+    <div class="ficha-top">
+      ${galeria}
+      <div class="ficha-info">
+        <span class="cat mono">${esc(p.categorias?.nombre || '')}</span>
+        <h2>${esc(p.nombre)}</h2>
+        ${p.descripcion ? `<p class="desc">${esc(p.descripcion)}</p>` : ''}
+        ${specs.length ? `<div class="especificaciones">
+          ${specs.map(([k,v]) =>
+            `<div class="espec"><span class="k">${esc(k)}</span>
+             <span class="v">${esc(v)}</span></div>`).join('')}
+        </div>` : ''}
+      </div>
+    </div>
+    <div class="ficha-tabla">
+      <h4 class="mono">Medidas y precios</h4>
+      <table class="tabla">
+        <thead><tr>
+          <th>Medida</th>
+          ${nombresPres.map(n => `<th style="text-align:right">${esc(n)}</th>`).join('')}
+        </tr></thead>
+        <tbody>${filas}</tbody>
+      </table>
+    </div>`;
+
+  $fondo.classList.add('abierto');
+  document.body.classList.add('bloqueado');
+
+  document.getElementById('btnCerrar').onclick = cerrarFicha;
+
+  const pista  = document.getElementById('pistaFicha');
+  const puntos = $ficha.querySelectorAll('.punto');
+  if (pista && puntos.length){
+    puntos.forEach(b => b.onclick = () =>
+      pista.scrollTo({ left: pista.clientWidth * Number(b.dataset.i), behavior:'smooth' }));
+    pista.addEventListener('scroll', () => {
+      const i = Math.round(pista.scrollLeft / pista.clientWidth);
+      puntos.forEach((b,n) => b.classList.toggle('on', n === i));
+    }, { passive:true });
   }
 }
 
-function activarGalerias(){
-  document.querySelectorAll('.flecha').forEach(b => {
-    b.onclick = () => {
-      const pista = document.getElementById(b.dataset.g).querySelector('.pista');
-      pista.scrollBy({ left: pista.clientWidth * Number(b.dataset.d), behavior:'smooth' });
-    };
-  });
+function cerrarFicha(){
+  $fondo.classList.remove('abierto');
+  document.body.classList.remove('bloqueado');
+}
 
-  document.querySelectorAll('.punto').forEach(b => {
-    b.onclick = () => {
-      const pista = document.getElementById(b.dataset.g).querySelector('.pista');
-      pista.scrollTo({ left: pista.clientWidth * Number(b.dataset.i), behavior:'smooth' });
-    };
-  });
+$fondo.onclick = e => { if (e.target === $fondo) cerrarFicha(); };
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') cerrarFicha();
+});
 
-  document.querySelectorAll('.galeria').forEach(g => {
-    const pista  = g.querySelector('.pista');
-    const puntos = g.querySelectorAll('.punto');
-    if (!puntos.length) return;
+// Comprobación de seguridad: ambas consultas DEBEN fallar.
+async function probarSeguridad(){
+  const { data } = await db.from('clientes').select('nombre').limit(1);
+  console.log(data?.length
+    ? 'ALERTA: la tabla clientes es accesible al público.'
+    : 'Seguridad OK: la tabla clientes no es accesible al público.');
 
-    pista.addEventListener('scroll', () => {
-      const i = Math.round(pista.scrollLeft / pista.clientWidth);
-      puntos.forEach((p, n) => p.classList.toggle('on', n === i));
-    }, { passive:true });
-  });
+  const { data: v } = await db.from('variantes').select('costo_usd').limit(1);
+  console.log(v?.length && v[0].costo_usd != null
+    ? 'ALERTA: el costo es visible al público.'
+    : 'Seguridad OK: el costo no es visible al público.');
 }
 
 await cargarConfiguracion();
